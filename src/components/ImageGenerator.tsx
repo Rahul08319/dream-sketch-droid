@@ -3,12 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Download, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-);
+import { supabase } from "@/integrations/supabase/client";
 
 const ImageGenerator = () => {
   const [prompt, setPrompt] = useState("");
