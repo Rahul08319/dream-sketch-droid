@@ -1,0 +1,39 @@
+name: Evergreen Build & Automation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Automatically triggers on the 1st of every month at midnight UTC
+    # Ensures repo remains active, verified, and continuously up to date in the coming years
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  verify-and-build:
+    name: Evergreen Integrity Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Verify TypeScript & Build Output
+        run: npm run build
+
+      - name: Record Automation Timestamp
+        run: |
+          YEAR=$(date +'%Y')
+          echo "Evergreen check executed successfully in Year: $YEAR"
+          echo "Status: Operational & Green"
